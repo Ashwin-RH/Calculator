@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Truculenta:opsz,wght@12..72,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+body {
+  @apply font-poppins bg-gradient-to-br from-gray-200 to-gray-800;
+  min-height: 100vh;
+}
+  .calculator {
+    @apply bg-black/40 items-center justify-center w-80 mx-auto mt-20 p-4 rounded-lg shadow-lg shadow-gray-200 backdrop-blur-[8px];
+  }
+  input {
+    @apply w-full text-right py-1 px-5 text-2xl bg-transparent text-white;
+  }
+  .buttons {
+    @apply grid grid-cols-4 gap-y-4 gap-x-3 mt-4;
+  }
+  button {
+    @apply transition duration-300  text-xl;
+  }
+  .number {
+    @apply bg-gray-200 text-gray-700 rounded-lg p-2;
+  }
+  .operator {
+    @apply bg-[#219ebc] text-white rounded-lg p-2;
+  }
+}
