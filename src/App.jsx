@@ -6,7 +6,7 @@ function App() {
   const [result, setResult] = useState("");
 
   const handleClick = (e) => {
-  const value = e.target.id;
+  let value = e.target.id;
   // Convert 'x' to '*' for actual calculation
   if(value === "x") value="*"
   if (value === "." && result.endsWith(".")) return;
