@@ -7,6 +7,8 @@ function App() {
 
   const handleClick = (e) => {
   const value = e.target.id;
+  // Convert 'x' to '*' for actual calculation
+  if(value === "x") value="*"
   if (value === "." && result.endsWith(".")) return;
   setResult(result.concat(value));
 };
@@ -50,7 +52,7 @@ const calculate = () => {
   ["7", "number", handleClick],
   ["8", "number", handleClick],
   ["9", "number", handleClick],
-  ["*", "operator", handleClick],
+  ["x", "operator", handleClick],
   ["4", "number", handleClick],
   ["5", "number", handleClick],
   ["6", "number", handleClick],
@@ -68,7 +70,7 @@ const getButtonStyle = (label) => {
   if (label === "AC") return "  bg-black/40 text-gray-300 rounded-full border-2 border-gray-300";
   if (label === "DE") return "bg-black/40 rounded-full border-2";
   if (label === "=") return "bg-transparent hover:bg-green-500 text-white rounded-full border-2 border-white/40 hover:scale-105 duration-500 col-span-2";
-  if (["/", "*", "-", "+", "."].includes(label)) return " rounded-2xl border-2 border-gray-300/50";
+  if (["/", "x", "-", "+", "."].includes(label)) return " rounded-2xl border-2 border-gray-300/50";
   return "bg-transparent border-2 border-gray-200/10 rounded-3xl";
 };
 
