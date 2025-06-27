@@ -161,33 +161,32 @@ const getButtonStyle = (label) => {
           </ul>
         </div>
 
-          <div className="absolute bottom-4 text-sm text-gray-300 hover:text-gray-100 cursor-pointer">
-            &copy; Ashwin Haragi
+        {/* Add padding-bottom to push history up */}
+        <div className="pb-24" />
 
-            <div className="flex items-center justify-center gap-2 mt-1 text-sm">
-            <div className="relative flex flex-col items-center justify-center ">
+        {/* Sticky footer that doesn't overlap content */}
+        <footer className="fixed bottom-2 inset-x-0 flex flex-col items-center text-sm text-gray-300">
+          <span className="hover:text-gray-100">&copy; Ashwin Haragi</span>
+
+          <div className="flex items-center gap-3 mt-1">
             <a
               href="https://github.com/Ashwin-RH"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-300/70 hover:text-gray-100 hover:scale-102"
-              >
-                <FiGithub size={16}/>
-              </a>
-              </div> 
-              
-             <div className="relative flex flex-col items-center justify-center">
-              <a
-                href="https://www.linkedin.com/in/ashwin-rh-aa263b217?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300/70 hover:text-gray-100"
-                >
-                  <LuLinkedin size={16}/>
-                </a>
-              </div> 
-            </div>
-         </div>     
+              className="text-gray-300/70 hover:text-gray-100 hover:scale-105 transition-transform"
+            >
+              <FiGithub size={16} />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/ashwin-rh-aa263b217"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300/70 hover:text-gray-100 hover:scale-105 transition-transform"
+            >
+              <LuLinkedin size={16} />
+            </a>
+          </div>
+        </footer> 
       </div>
     
   );
