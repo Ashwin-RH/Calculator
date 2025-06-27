@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { FiGithub , } from "react-icons/fi";
 import { LuLinkedin } from "react-icons/lu";
 import toast, { Toaster } from "react-hot-toast";
@@ -7,14 +7,33 @@ import toast, { Toaster } from "react-hot-toast";
 function App() {
   const [result, setResult] = useState("");
   const [history, setHistory] = useState([]);
+  const [justCalculated, setJustCalculated] = useState(false);
 
-  const handleClick = (e) => {
+
+const handleClick = (e) => {
   let value = e.target.id;
-  // Convert 'x' to '*' for actual calculation
-  if(value === "x") value="*"
+
+  // Convert 'x' to '*' for eval compatibility
+  if (value === "x") value = "*";
+
+  // Prevent double dots like "2.."
   if (value === "." && result.endsWith(".")) return;
-  setResult(result.concat(value));
+
+  if (justCalculated) {
+    if (/[0-9.]/.test(value)) {
+      // If number or dot after calculation → start fresh
+      setResult(value);
+    } else {
+      // If operator after calculation → continue from result
+      setResult(result + value);
+    }
+    setJustCalculated(false); // reset flag
+  } else {
+    // Normal case: keep appending
+    setResult(result + value);
+  }
 };
+
 
 
   const clear = () => {
@@ -25,49 +44,54 @@ function App() {
     setResult(result.slice(0, -1));
   };
 
-const calculate = () => {
-  try {
-    if (result.trim() === "") {
-      setResult("Invalid");
-      setTimeout(() => setResult(""), 1500);
-      return;
-    }
+const calculate = useCallback(() => {
+  if (!result || result === "Invalid" || result.trim()==="") return;
 
-    const evaluated = eval(result);
+  try {
+    const evaluated = Function('"use strict"; return (' + result + ')')();
+
 
     if (evaluated === undefined || evaluated === null || isNaN(evaluated)) {
       setResult("Invalid");
       setTimeout(() => setResult(""), 1000);
     } else {
-      // ✅ Save to history here
       setHistory(prev => [...prev, `${result} = ${evaluated}`]);
-
       setResult(evaluated.toString());
+      setJustCalculated(true);
     }
   } catch (error) {
     setResult("Invalid");
     setTimeout(() => setResult(""), 1000);
   }
-};
+},[result]);
+
 
 useEffect(() => {
   const handleKeyDown = (e) => {
     const key = e.key;
 
     if (/[0-9+\-*/.%]/.test(key)) {
-      setResult(prev => prev + (key === '*' ? '*' : key));
-    } else if (key === 'Enter') {
-      calculate();
-    } else if (key === 'Backspace') {
-      setResult(prev => prev.slice(0, -1));
-    } else if (key.toLowerCase() === 'c') {
+      const value = key === "*" ? "*" : key;
+
+      if (justCalculated) {
+        setJustCalculated(false);
+        setResult(/[0-9.]/.test(value) ? value : result + value);
+      } else {
+        setResult((prev) => prev + value);
+      }
+    } else if (key === "Enter") {
+      e.preventDefault();
+      calculate(); // now will always be the latest version
+    } else if (key === "Backspace") {
+      setResult((prev) => prev.slice(0, -1));
+    } else if (key.toLowerCase() === "c") {
       clear();
     }
   };
 
-  window.addEventListener('keydown', handleKeyDown);
-  return () => window.removeEventListener('keydown', handleKeyDown);
-}, [calculate, clear]); // Add dependencies if you define calculate/clear with useCallback
+  window.addEventListener("keydown", handleKeyDown);
+  return () => window.removeEventListener("keydown", handleKeyDown);
+}, [calculate, justCalculated, result]);
 
 
 
@@ -112,7 +136,7 @@ const getButtonStyle = (label) => {
       {/* Calculator card */}
       <div className="z-10 bg-black/40 border border-gray-200/40 backdrop-blur-[4px] p-6 rounded-2xl shadow-2xl w-80 hover:scale-101 duration-500 transform-gpu will-change-transform">
       <h1 className="text-white text-left font-truculenta font-medium "> Eval </h1>
-        <div
+        <div 
         onClick={() => {
           if (result) {
             navigator.clipboard.writeText(result);
@@ -162,7 +186,7 @@ const getButtonStyle = (label) => {
         </div>
 
         {/* Add padding-bottom to push history up */}
-        <div className="pb-24" />
+        <div className="pb-20" />
 
         {/* Sticky footer that doesn't overlap content */}
         <footer className="fixed bottom-2 inset-x-0 flex flex-col items-center text-sm text-gray-300">
