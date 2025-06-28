@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Display from "./Display";
 import ButtonGrid from "./ButtonGrid";
+import CurrencyConverter from "./CurrencyConverter"; 
 import { CiGrid41 } from "react-icons/ci";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdOutlineCurrencyRupee } from "react-icons/md";
@@ -15,6 +16,9 @@ import { FaTemperatureHalf } from "react-icons/fa6";
 const CalculatorCard = ({ result, buttons, handleClick, clear, deleteElement, calculate, openHistory }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showDiff,setShowDiff] = useState(false);
+  const [showCurrency, setShowCurrency] = useState(false);
+
+  
 
   return (
     <div className="z-10 relative bg-black/40 border border-gray-200/40 backdrop-blur-[4px] p-6 rounded-2xl shadow-2xl w-80 hover:scale-101 duration-500 transform-gpu will-change-transform">
@@ -39,7 +43,7 @@ const CalculatorCard = ({ result, buttons, handleClick, clear, deleteElement, ca
                     document.getElementById("history")?.scrollIntoView({ behavior: "smooth" });
                     }, 100);
                 }}
-                className="block w-full h-9 px-4 py-2 "
+                className="block w-full h-9 px-4 py-2 active:scale-95 "
                 >
                 History
                 </button>
@@ -48,7 +52,7 @@ const CalculatorCard = ({ result, buttons, handleClick, clear, deleteElement, ca
                     setShowMenu(false);
                     console.log("Settings clicked");
                 }}
-                className="block w-full h-9 px-4 py-2 mb-1"
+                className="block w-full h-9 px-4 py-2 mb-1 active:scale-95"
                 >
                 Settings
                 </button>
@@ -87,7 +91,9 @@ const CalculatorCard = ({ result, buttons, handleClick, clear, deleteElement, ca
 
         {/* Grid of conversion options */}
         <div className="w-full grid grid-cols-3 gap-2 cursor-pointer">
-          <button className="h-20 flex flex-col items-center justify-between rounded-xl border-2 border-gray-400/30  m-1 shadow-lg hover:border-gray-300/50 hover:scale-101 duration-300 active:scale-95 transition-all transform-gpu will-change-transform">
+          <button 
+          onClick={()=>setShowCurrency(prev => !prev)}
+          className="h-20 flex flex-col items-center justify-between rounded-xl border-2 border-gray-400/30  m-1 shadow-lg hover:border-gray-300/50 hover:scale-101 duration-300 active:scale-95 transition-all transform-gpu will-change-transform">
             <MdOutlineCurrencyRupee className="text-6xl p-2" />
             <span className="text-sm text-white/80 mb-1">Currency</span>
           </button>
@@ -112,12 +118,12 @@ const CalculatorCard = ({ result, buttons, handleClick, clear, deleteElement, ca
             <span className="text-sm mb-1">Speed</span>
           </button>
         </div>
-      </div>
-
-
-          
-        
+      </div>   
       )}
+      {showCurrency && <CurrencyConverter onClose={() => setShowCurrency(false)} />}
+
+
+
 
     </div>
   );
