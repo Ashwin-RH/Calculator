@@ -10,6 +10,10 @@ function App() {
   const [justCalculated, setJustCalculated] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
 
+  const closeHistory=()=>{
+    setShowHistory(false);
+  };
+
 
   const handleClick = (e) => {
     let value = e.target.id;
@@ -110,7 +114,9 @@ function App() {
       <HistoryPanel
       history={history}
       clearHistory={() => setHistory([])}
-      showHistory={showHistory} />
+      showHistory={showHistory}
+      closeHistory={closeHistory} 
+      />
       <div className="pb-20" />
       <Footer />
     </div>
