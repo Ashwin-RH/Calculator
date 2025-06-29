@@ -68,7 +68,7 @@ const WeightConverter = ({onClose}) => {
 
       <button
         onClick={handleConvert}
-        className="w-full  bg-transparent border text-white py-2 px-4 rounded-xl hover:bg-green-500 hover:shadow-md active:scale-95 duration-500 transition-all transform-gpu will-change-transform"
+        className="w-full  bg-transparent border-2 border-white/40 text-white py-2 px-4 rounded-xl hover:bg-green-500 hover:shadow-md active:scale-95 duration-500 transition-all transform-gpu will-change-transform"
       >
         Convert
       </button>
