@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Display from "./Display";
 import ButtonGrid from "./ButtonGrid";
 import CurrencyConverter from "./CurrencyConverter"; 
+import WeightConverter from './WeightConverter';
 import { CiGrid41 } from "react-icons/ci";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdOutlineCurrencyRupee } from "react-icons/md";
@@ -16,7 +17,8 @@ import { FaTemperatureHalf } from "react-icons/fa6";
 const CalculatorCard = ({ result, buttons, handleClick, clear, deleteElement, calculate, openHistory }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showDiff,setShowDiff] = useState(false);
-  const [showCurrency, setShowCurrency] = useState(false);
+  const [activeConverter, setActiveConverter] = useState(null); // null | 'currency' | 'weight'
+
 
   
 
@@ -92,13 +94,15 @@ const CalculatorCard = ({ result, buttons, handleClick, clear, deleteElement, ca
         {/* Grid of conversion options */}
         <div className="w-full grid grid-cols-3 gap-2 cursor-pointer">
           <button 
-          onClick={()=>setShowCurrency(prev => !prev)}
+          onClick={()=>setActiveConverter(prev => (prev === "currency" ? null : "currency"))}
           className="h-20 flex flex-col items-center justify-between rounded-xl border-2 border-gray-400/30  m-1 shadow-lg hover:border-gray-300/50 hover:scale-101 duration-300 active:scale-95 transition-all transform-gpu will-change-transform">
             <MdOutlineCurrencyRupee className="text-6xl p-2" />
             <span className="text-sm text-white/80 mb-1">Currency</span>
           </button>
 
-          <button className="h-20 flex flex-col items-center justify-between rounded-xl border-2 border-gray-400/30 m-1 shadow-lg hover:border-gray-300/50 hover:scale-101 duration-300 active:scale-95 transition-all transform-gpu will-change-transform">
+          <button
+          onClick={()=>setActiveConverter(prev=>(prev === "weight" ? null : "weight"))} 
+          className="h-20 flex flex-col items-center justify-between rounded-xl border-2 border-gray-400/30 m-1 shadow-lg hover:border-gray-300/50 hover:scale-101 duration-300 active:scale-95 transition-all transform-gpu will-change-transform">
             <GiWeight className="text-6xl p-2" />
             <span className="text-sm mb-1">Weight</span>
           </button>
@@ -120,7 +124,13 @@ const CalculatorCard = ({ result, buttons, handleClick, clear, deleteElement, ca
         </div>
       </div>   
       )}
-      {showCurrency && <CurrencyConverter onClose={() => setShowCurrency(false)} />}
+      {activeConverter === "currency" && (
+        <CurrencyConverter onClose={() => setActiveConverter(null)} />
+      )}
+      {activeConverter === "weight" && (
+        <WeightConverter onClose={() => setActiveConverter(null)} />
+      )}
+
 
 
 
